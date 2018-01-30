@@ -4,8 +4,13 @@ date: 2017-11-17 17:10:33
 tags: React
 categories: JavaScript
 ---
-```
-    webpack.config.dev.js(开发环境)中添加plugins: 
+
++ 执行 yarn add babel-plugin-import --dev or npm install babel-plugin-import  --save-dev
++ 修改一下文件
+
+webpack.config.dev.js(开发环境)中添加plugins
+
+```webpack.config.dev.js
 {
   test: /\.(js|jsx|mjs)$/,
   include: paths.appSrc,
@@ -22,9 +27,9 @@ categories: JavaScript
 }
 ```
 
-    webpack.config.prod.js(线上环境)中添加plugins
+webpack.config.prod.js(线上环境)中添加plugins
 
-```
+```webpack.config.prod.js
 // Process JS with Babel.
 {
   test: /\.(js|jsx|mjs)$/,
