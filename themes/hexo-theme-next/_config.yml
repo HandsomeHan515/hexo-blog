@@ -59,6 +59,13 @@ menu:
   # sitemap: /sitemap.xml || sitemap
   # commonweal: /404/ || heartbeat
 
+sitemap:
+  path: sitemap.xml
+  
+baidusitemap:
+  path: baidusitemap.xml
+
+
 # Enable/Disable menu icons.
 menu_icons:
   enable: true
