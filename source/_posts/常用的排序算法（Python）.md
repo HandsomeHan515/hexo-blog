@@ -25,7 +25,7 @@ categories: Algorithm
 
 ![冒泡排序过程](bubble_sort.jpg)
 
-```bubble sort
+```bubble
 def bubble_sort(arr):
     times = 0
     for i in range(len(arr) - 1):
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
 ```
 
-```bubble sort v2
+```bubble
 def bubble_sort_v2(arr):
     for i in range(len(arr) - 1):
         pos = 0
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
 ![选择排序过程](selection_sort.jpg)
 
-```selection_sort
+```selection
 def selection_sort(arr):
     for i in range(len(arr)):
         for j in range(i, len(arr)):
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
 ![直接插入排序过程](insertion_sort.jpg)
 
-```insertion_sort
+```insertion
 def insertion_sort(arr):
     for i in range(1, len(arr)):
         for j in range(i, 0, -1):
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 
 ![希尔排序过程](希尔排序.jpg)
 
-```shell sort
+```shell
 def shell_sort(arr):
     gap = len(arr) // 2
 
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
 + 将两个或多个有序表合成一个有序表
 
-```merge sort
+```merge
 def merge_sort(arr):
     if len(arr) <= 1:
         return arr
