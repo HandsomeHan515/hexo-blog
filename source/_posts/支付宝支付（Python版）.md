@@ -4,8 +4,7 @@ date: 2017-10-14 15:11:15
 tags: Others
 categories: Others
 ---
-
-## App支付请求参数说明(必传字段)
+# App支付请求参数说明(必传字段)
 
     appid（应用id）
     method (接口名称，若是APP支付接口值是：alipay.trade.app.pay)
@@ -17,16 +16,15 @@ categories: Others
     version （版本号：1.0）
     notify_url （支付宝服务器主动通知商户服务器里指定的页面）
     biz_content （业务请求参数）
-    
     业务参数必传字段
-    
     subject(商品标题)
     out_trade_no（商户网站唯一订单号）
     total_amount （价钱，字符串类型，单位是元）
     product_code （销售商品码： APP支付的固定值：QUICK_MSECURITY_PAY）
 
-### 示例代码：
-```
+## 示例代码：
+
+```code
 biz_content = {
     'subject': subject,
     'total_amount': '%.2f' % float(total_amount),
@@ -47,28 +45,25 @@ payload = {
     'biz_content': json.dumps(biz_content, separators=(',', ':')), # separators=(',', ':')可以用来去掉json中的空格来压缩json
 }
 ```
-    
+
 ## 请求示例的获取
 
 ### 请求参数按照key=value&key=value方式拼接的未签名原始字符串：
 
-```
+```code
 app_id=2015052600090779&biz_content={"timeout_express":"30m","product_code":"QUICK_MSECURITY_PAY","total_amount":"0.01","subject":"1","body":"我是测试数据","out_trade_no":"IQJZSRC1YMQB5HU"}&charset=utf-8&format=json&method=alipay.trade.app.pay&notify_url=http://domain.merchant.com/payment_notify&sign_type=RSA2&timestamp=2016-08-25 20:26:31&version=1.0
 ```
 
-### 对原始字符串进行签名:
+### 对原始字符串进行签名
 
 1. 筛选并排序
-    
-        获取所有请求参数，不包括字节类型参数，如文件、字节流，剔除sign字段，剔除值为空的参数，并按照第一个字符的键值ASCII码递增排序（字母升序排序），如果遇到相同字符则按照第二个字符的键值ASCII码递增排序，以此类推
-
-
-
+    获取所有请求参数，不包括字节类型参数，如文件、字节流，剔除sign字段，剔除值为空的参数，并按照第一个字符的键值ASCII码递增排序（字母升序排序），如果遇到相同字符则按照第二个字符的键值ASCII码递增排序，以此类推
 2. 拼接
-        
-        将排序后的参数与其对应值，组合成“参数=参数值”的格式，并且把这些参数用&字符连接起来，此时生成的字符串为待签名字符串
+    将排序后的参数与其对应值，组合成“参数=参数值”的格式，并且把这些参数用&字符连接起来，此时生成的字符串为待签名字符串
+3. 调用签名函数
+    使用各自语言对应的SHA256WithRSA(对应sign_type为RSA2)或SHA1WithRSA(对应sign_type为RSA)签名函数利用商户私钥对待签名字符串进行签名，并进行Base64编码
 
-```
+```code
 # 对payload数据进行排序和拼接
 def order_data(payload):
     lst = []
@@ -79,10 +74,7 @@ def order_data(payload):
     return order_payload
 ```
 
-3. 调用签名函数
-    
-        使用各自语言对应的SHA256WithRSA(对应sign_type为RSA2)或SHA1WithRSA(对应sign_type为RSA)签名函数利用商户私钥对待签名字符串进行签名，并进行Base64编码
-```
+```code
 import rsa
 import base64
 
@@ -94,10 +86,10 @@ def sign(payload, private_key=None):
 ```
 
 ### 把生成的签名赋值给sign参数，拼接到请求参数中
-        
-        最后对请求字符串的所有一级value（biz_content作为一个value）进行encode，编码格式按请求串中的charset为准，没传charset按UTF-8处理，获得最终的请求字符串
 
-```
+最后对请求字符串的所有一级value（biz_content作为一个value）进行encode，编码格式按请求串中的charset为准，没传charset按UTF-8处理，获得最终的请求字符串
+
+```code
 #  对所有value值进行urlencode操作
 from urllib.parse import quote_plus
 
@@ -112,9 +104,10 @@ def urlencode_data(payload, sign):
         order_payload += "&sign=%s" % quote_plus(sign, encoding='utf-8')
     return order_payload
 ```
+
 ## 进行过urlencode的数据
 
-```
+```code
 app_id=2016081600254796&biz_content=%7B%22subject%22%3A%22%5Cu6d4b%5Cu8bd5%22%2C%22total_amount%22%3A%220.01%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22out_trade_no%22%3A%22alipay20171014%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fdongwu-inc.com%3A10014%2Falipay%2Fnotify%2F&sign_type=RSA2&timestamp=2017-10-14+14%3A03%3A50&version=1.0&sign=PbDyqQ%2BuAdJXWmEuJSFRq%2FiEPg7CJGbsf%2FexHOSG2%2FiW2TGigeFRKhZJNpxcImdkdcFLmFLlEhTNotfJKMDfhjFx0TJH0vVxQHECnkO5XpVpJ%2F2YZbj3fi8UPe2N%2FiZ9tJ5LBp%2Bj%2BXmBcW55lvsUA5s09bTgn5wU%2BhY4kiB6YO0U1CqARyPd6b2Nhs2A6jN4utyjzoUOvDQwXksmDB48qJSnJfdcfbxP1AtZ4nAVY2vtWZHPtQbj5NqY6jsNd2WxCRVqwHYdMZf0lHPwXa7ygVeALtIDhw%2FYXepOmTNJkYJs4sIpB8p9rpSgoY5A46SDThM90Vg5Q4c0d4kxWnG9%2FA%3D%3D
 
 ```

@@ -4,16 +4,16 @@ date: 2018-01-08 15:14:21
 tags: React
 categories: JavaScript
 ---
+# Nginx server 配置如下：
 
-  Nginx server 配置如下：
-```
- server {
-        listen 80;
-        server_name app.handsomehan.cn;
-        index index.html;
-        root /data/web/flower/;
-        location / {
-                try_files $uri $uri /index.html;
-        }
+```code
+server {
+    listen 80;
+    server_name app.handsomehan.cn;
+    index index.html;
+    root /data/web/flower/;
+    location / {
+            try_files $uri $uri /index.html;
+    }
 }
 ```
