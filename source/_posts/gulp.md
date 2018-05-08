@@ -41,7 +41,7 @@ function day() {
 }
 ```
 
-### gulpfile.js
+### gulpfile js
 
 ```gulpfile.js
 var gulp = require('gulp');
@@ -64,4 +64,87 @@ gulp.task('default', ['script', 'auto']);
 
 ```test.js
 function formatDate(t){return(new Date).toLocaleString()}function year(){return(new Date).getFullYear()}function month(){return(new Date).getMonth()}function day(){return(new Date).getDay()}
+```
+
+## 压缩 CSS
+
+### css/test.css
+
+```test.css
+* {
+  padding: 0;
+  margin: 0;
+}
+
+div {
+  padding: 0 20px;
+}
+```
+
+### gulpfile css
+
+```gulpfile.js
+var cleanCss = require('gulp-clean-css');
+
+gulp.task('css', function () {
+  gulp.src('css/*.css')
+    .pipe(cleanCss())
+    .pipe(gulp.dest('dist/css'))
+});
+
+gulp.task('auto', function () {
+  gulp.watch('css/*.css', ['css']);
+});
+
+gulp.task('default', ['css', 'auto']);
+```
+
+### /dist/test.css
+
+```test.css
+*{padding:0;margin:0}div{padding:0 20px}
+```
+
+## 压缩图片
+
+### gulpfile css
+
+```gulpfile.js
+var imagemin = require('gulp-imagemin');
+
+gulp.task('images', function () {
+  gulp.src('images/*.*')
+    .pipe(imagemin({
+      progressive: true
+    }))
+    .pipe(gulp.dest('dist/images'))
+});
+
+gulp.task('auto', function () {
+  gulp.watch('images/*.*', ['images']);
+});
+
+gulp.task('default', ['images', 'auto']);
+```
+
+## 编译less
+
+### gulpfile less
+
+```gulpfile.js
+var less = require('gulp-less');
+
+// 编译成css并且压缩
+gulp.task('less', function () {
+  gulp.src('less/*.less')
+    .pipe(less())
+    .pipe(cleanCss())
+    .pipe(gulp.dest('dist/css'))
+});
+
+gulp.task('auto', function () {
+  gulp.watch('less/*.less', ['less']);
+});
+
+gulp.task('default', ['less', 'auto']);
 ```
