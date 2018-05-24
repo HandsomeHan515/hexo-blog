@@ -46,7 +46,7 @@ console.log('arr: %o, arr2: %o', arr, arr2);
 
 ```js
 function shallow(obj) {
-  if (typeof obj !== 'object') return;
+  if (typeof obj !== 'object' || typeof obj === null) return obj;
   // 根据 obj 的类型判断是新建一个数组还是新建一个对象
   var newObj = obj instanceof Array ? [] : {};
   // 遍历 obj, 判断是 obj 的属性，然后进行拷贝
@@ -63,7 +63,7 @@ function shallow(obj) {
 
 ```js
 function deep(obj) {
-  if (typeof obj !== 'object') return;
+  if (typeof obj !== 'object' || typeof obj === null) return obj;
   var newObj = obj instanceof Array ? [] : {};
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
