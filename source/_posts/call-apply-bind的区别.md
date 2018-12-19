@@ -53,7 +53,7 @@ Function.prototype.myCall = function(context) {
 # 然后调用函数并将对象上的函数删除
 ```
 
-### 模拟实现 apply
+## 模拟实现 apply
 
 ```js
 Function.prototype.MyApply = function (context) { 
@@ -68,6 +68,67 @@ Function.prototype.MyApply = function (context) {
     }
     delete context.fn
     return result
+}
+```
+
+## call 应用实例
+
+```js
+/**
+ * @param obj
+ * @return {string}
+ */
+function dataType(obj) {
+    const str = Object.prototype.toString.call(obj)
+    return /^\[object (.*)\]$/.exec(str)[1].toLowerCase()
+}
+
+function isType(obj, type) {
+    return Object.prototype.toString.call(obj) === ('[object ' + type + ']')
+}
+
+function isString(obj) {
+    return isType(obj, 'String')
+}
+
+function isArray(obj) {
+    return isType(obj, 'Array')
+}
+
+function isObject(obj) {
+    return isType(obj, 'Object')
+}
+
+function isFunction(obj) {
+    return isType(obj, 'Function')
+}
+
+function isBoolean(obj) {
+    return isType(obj, 'Boolean')
+}
+
+function isNumber(obj) {
+    return isType(obj, 'Number')
+}
+
+function isUndefined(obj) {
+    return isType(obj, 'Undefined')
+}
+
+function isNull(obj) {
+    return isType(obj, 'Null')
+}
+
+function isDate(obj) {
+    return isType(obj, 'Date')
+}
+
+function isRegExp(obj) {
+    return isType(obj, 'RegExp')
+}
+
+function isMath(obj) {
+    return isType(obj, 'Math')
 }
 ```
 
