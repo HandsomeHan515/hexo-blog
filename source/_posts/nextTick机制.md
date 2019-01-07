@@ -145,3 +145,59 @@ export function nextTick (cb?: Function, ctx?: Object) {
 
 // nextTick 源码中使用了一个异步锁的概念，即接收第一个回调函数时，先关上锁，执行异步方法。此时，浏览器处于等待执行完同步代码就执行异步代码的情况
 ```
+
+## 使用情景（Vue 2.5+）
+
+> 在Vue 2.4之前的版本中，nextTick几乎都是基于microTask实现的，但是由于microTask的执行优先级非常高，在某些场景之下它甚至要比事件冒泡还要快，就会导致一些诡异的问题；但是如果全部都改成macroTask，对一些有重绘和动画的场景也会有性能的影响。所以最终nextTick采取的策略是默认走microTask，对于一些DOM的交互事件，如v-on绑定的事件回调处理函数的处理，会强制走macroTask
+
+### microTask
+
+```js
+new Vue({
+    el: '#app',
+    data: {
+        name: 'a'
+    },
+    mounted() {
+        this.name = 'b';
+        console.log('script')
+        this.$nextTick(function () {
+            console.log('nextTick')
+        })
+        Promise.resolve().then(function () {
+            console.log('promise')
+        })
+    },
+})
+// 'script','nextTick','promise'
+```
+
+### macroTask
+
+```html
+<div id="app">
+    <span>{{name}}</span>
+    <button @click="handleClick">change</button>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            name: 'start'
+        },
+        methods: {
+            handleClick: function () {
+                this.nam = 'end';
+                console.log('script')
+                this.$nextTick(function () {
+                    console.log('nextTick')
+                })
+                Promise.resolve().then(function () {
+                    console.log('promise')
+                })
+            }
+        }
+    })
+</script>
+// 触发事件后 => 'script','promise','nextTick'
+```
