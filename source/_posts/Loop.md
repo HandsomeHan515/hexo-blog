@@ -12,7 +12,7 @@ categories: JavaScript
 
 ## 微任务(microtask)
 
-  process.nextTick, promise, Object.observe, MutationObserver
+  process.nextTick, Promise, MutationObserver
 
 ## 宏任务(macrotask)
 
@@ -22,8 +22,11 @@ categories: JavaScript
 
 ## 一次正确的Event Loop
 
-1.执行同步代码，这属于宏任务；
-2.执行栈为空，查询是否有微任务需要执行；
-3.执行所有微任务；
-4.渲染UI；
-5.开始下一轮Event Loop，执行宏任务中的异步代码。
+1. 初始状态：调用栈空。micro 队列空，macro 队列里有且只有一个 script 脚本（整段代码）
+2. 全局上下文（script 标签）被推入调用栈，同步代码执行。在执行的过程中，通过对一些接口的调用，可以产生新的 micro-task 和 macro-task，他们会被推入各自的任务队列里。同步代码执行完成后，script 脚本被移出 macro 队列，这个过程本质上是`队列的 macro-task 的执行和出队过程`；（macro-task 出队时，任务是一个一个执行的）
+3. 处理 micro-task，会逐个执行队列里的任务并出队（micro-task 出队时，任务是一队一队执行的）
+4. `执行渲染操作，更新界面`
+5. 开始下一轮Event Loop，执行宏任务中的异步代码
+
+![Micro And Micro Task](macro.png)
+
