@@ -50,60 +50,58 @@ console.log(data.a , data.b) // 10 20
 ## 基本实现思路
 
 ```js
-let Target = null
-const data = {
-    a: {
-        a: 10
-    },
-    b: 2
-}
+let target = null
+let data = { price: 5, quantity: 2 }
 
-function reactive(data) {
-    for (let key in data) {
-        const dep = []
-        let val = data[key]
-        // 如果 val 是对象，递归调用 walk 函数将其转为访问器属性
-        const nativeString = Object.prototype.toString.call(val)
-        if (nativeString === '[object Object]') {
-            reactive(val)
+class Dep {
+    constructor () {
+        this.subscribers = []
+    }
+
+    depend () {
+        if (target && !this.subscribers.includes(target)) {
+            this.subscribers.push(target)
         }
+    }
 
-        Object.defineProperty(data, key, {
-            set(newVal) {
-                if (newVal === val) return
-                val = newVal
-                dep.forEach(fn => fn())
-            },
-            get() {
-                dep.push(Target)
-                return val
-            }
-        })
+    notify () {
+        this.subscribers.forEach(sub => sub())
     }
 }
 
-function $watch(exp, fn) {
-    Target = fn
-    let pathArr,
-        obj = data
-    // 检查 exp 中是否包含 .
-    if (/\./.test(exp)) {
-        // 将字符串转为数组，例：'a.b' => ['a', 'b']
-        pathArr = exp.split('.')
-        // 使用循环读取到 data.a.b
-        pathArr.forEach(p => {
-            obj = obj[p]
-        })
-        return
-    }
-    data[exp]
-}
+Object.keys(data).forEach(key => {
+    let internalValue = data[key]
+    const dep = new Dep()
 
-$watch('a.a', () => {
-    console.log('第一个依赖')
+    Object.defineProperty(data, key, {
+        get () {
+            dep.depend() // Remember the target we'er running
+            return internalValue
+        },
+        set (newVal) {
+            internalValue = newVal
+            dep.notify() // Re-run stored functions
+        }
+    })
 })
 
-data.a.a = 20 // 第一个依赖
-```
+function watcher (myFunc) {
+    target = myFunc
+    target()
+    target = null
+}
 
-待续。。。
+watcher(() => {
+    data.total = data.price * data.quantity
+})
+
+console.log(data.price) // 5
+console.log(data.quantity) // 3
+console.log(data.total) // 10
+
+data.price = 20
+console.log(data.total) // 40
+
+data.quantity = 3
+console.log(data.total) // 60
+```
