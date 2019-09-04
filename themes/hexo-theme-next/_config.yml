@@ -78,9 +78,9 @@ menu_icons:
 
 # Schemes
 # scheme: Muse
-scheme: Mist
+# scheme: Mist
 # scheme: Pisces
-# scheme: Gemini
+scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -115,7 +115,7 @@ links_title: HansomeHan
 # links_layout: block
 links_layout: inline
 links:
-  My Blog: https://handsomehan.cn
+  My Blog: http://handsomehan.cn
 
 
 # Sidebar Avatar

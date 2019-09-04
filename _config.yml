@@ -82,21 +82,21 @@ baidusitemap:
   
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: rsync
-  host: 114.67.143.179
-  user: root
-  root: /data/blog
-  port: 22
-  delete: true
-  verbose: true
-  ignore_errors: true
-
-
 # deploy:
-##  type: git
-##   repository: git@github.com:HandsomeHan515/HandsomeHan515.github.io.git
-##  branch: master
+#   type: rsync
+#   host: 114.67.143.179
+#   user: root
+#   root: /data/blog
+#   port: 22
+#   delete: true
+#   verbose: true
+#   ignore_errors: true
+
+
+deploy:
+  type: git
+  repository: git@github.com:HandsomeHan515/HandsomeHan515.github.io.git
+  branch: master
 
 plugins:
   hexo-generator-feed
