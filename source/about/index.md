@@ -5,9 +5,9 @@ date: 2017-09-04 21:49:20
 
 ## Mine
 
-![我的照片](about/index/gitlab.jpeg)
+![我的照片](gitlab.jpeg)
 
-![我的照片](about/index/mine.jpeg)
+![我的照片](mine.jpeg)
 
 ## About
 
@@ -27,4 +27,4 @@ date: 2017-09-04 21:49:20
 
 ## Motto
 
-    To do what you what to do!
+> To do what you what to do!
